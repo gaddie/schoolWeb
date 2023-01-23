@@ -203,6 +203,10 @@ class LecturersForm(FlaskForm):
     department = SelectField('Department', choices=department_names)
     submit = SubmitField("Register")
 
+# class Grades(FlaskForm):
+#     score = IntegerField("Marks", validators=[DataRequired])
+
+
 # VALIDATION OF EMAIL
 def check(email):
     try:
@@ -286,30 +290,9 @@ def send_email():
     if not current_user.is_authenticated:
         form = EmailForm()
 
-        # if request.method == 'POST':
-        #     email = form.email.data
-            
-            
-
-        #     student_email = session.query(Students).filter(Students.email == email).first().email
-
-
-        #     if student_email:
-        #         send_email_config(email)
-
-        #         student_form = StudentsResetForm()
-        #         return render_template("reset.html", student_email=student_email, form=student_form)
-        #     else:
-        #         flash("The email is not registered, please enter a registered email")
-        #         return redirect(url_for("send_email"))
-
-        # return render_template("send_email.html", form=form)
-
         if request.method == 'POST':
             email = form.email.data
-
             # check(email)
-            # student_email = Students.query.filter_by(email=email).first().email
             student_email = session.query(Students).filter(Students.email == email).first()
 
             if student_email:
@@ -367,7 +350,11 @@ def send_email():
 @app.route('/')
 def home():
     form = MyForm()
-    return render_template("index.html", form=form)
+    students = Students.query.all()
+    student_no = len(students)
+    lecturers = Lecturers.query.all()
+    lecturers_no = len(lecturers)
+    return render_template("index.html", form=form, student_no=student_no, lec_no=lecturers_no)
 
 
 @app.route('/admin_page', methods=["GET", "POST"])
