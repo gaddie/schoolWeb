@@ -22,12 +22,10 @@ from sqlalchemy.ext.declarative import declarative_base
 from wtforms import Form, SelectField
 
 
-
-
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'any-secret-key-you-choose'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///school.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 bootstrap = Bootstrap(app)
@@ -35,10 +33,9 @@ bootstrap = Bootstrap(app)
 
 # create a session
 session = db.session
-
+# manager = Manager(app)
 migrate = Migrate(app, db)
-
-
+# manager.add_command('db', MigrateCommand)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -69,49 +66,57 @@ def load_user(user):
 
 
 # ************ lectures db **************
-# class Lecturers(UserMixin, db.Model):
-#     __tablename__ = 'lecturers'
-#     id = db.Column(db.Integer, primary_key=True)
-#     email = db.Column(db.String(100), unique=True)
-#     password = db.Column(db.String(100))
-#     f_name = db.Column(db.String(1000))
-#     l_name = db.Column(db.String(1000))
-#     phone = db.Column(db.Integer, unique=True)
+class Lecturers(UserMixin, db.Model):
+    __tablename__ = 'lecturers'
+    id = db.Column(db.Integer, primary_key=True)
+    f_name = db.Column(db.String(1000))
+    l_name = db.Column(db.String(1000))
+    email = db.Column(db.String(100), unique=True)
+    password = db.Column(db.String(100))
+    phone = db.Column(db.Integer, unique=True)
+    gender = db.Column(db.String(100))
+    department = db.Column(db.String(100))
 
-# with app.app_context(): 
-#     db.create_all()   
+
+with app.app_context():
+    db.create_all()
 
 
 # *************** departments ****************
-# class Lecturers(UserMixin, db.Model):
-#     __tablename__ = 'lecturers'
-#     id = db.Column(db.Integer, primary_key=True)
-#     department = db.Column(db.String(100), unique=True)
+class Departments(UserMixin, db.Model):
+    __tablename__ = 'departments'
+    id = db.Column(db.Integer, primary_key=True)
+    department = db.Column(db.String(100), unique=True)
   
 
-# with app.app_context(): 
-#     db.create_all()   
+with app.app_context():
+    db.create_all()
 
 
 # *************** grades ****************
-# class Grade(UserMixin, db.Model):
-#     __tablename__ = 'grades'
-#     id = db.Column(db.Integer, primary_key=True)
+class Grade(db.Model):
+    __tablename__ = 'grades'
+    id = db.Column(db.Integer, primary_key=True)
+    grade = db.Column(db.Float)
+    subject = db.Column(db.String(30))
+
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
 
 
-# with app.app_context(): 
-#     db.create_all()   
+with app.app_context():
+    db.create_all()
 
 
 # ************ notice board *************
-# class Anouncement(UserMixin, db.Model):
-#     __tablename__ = 'anouncement'
-#     id = db.Column(db.Integer, primary_key=True)
-#     date = db.Column(db.String(100))
-#     event = db.Column(db.String(1000))
+class Announcement(UserMixin, db.Model):
+    __tablename__ = 'announcement'
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.String(100))
+    event = db.Column(db.String(1000))
 
-# with app.app_context(): 
-#     db.create_all()   
+
+with app.app_context():
+    db.create_all()
 
 
 # ************* students DB **************
@@ -125,7 +130,9 @@ class Students(UserMixin, db.Model):
     phone = db.Column(db.Integer, unique=True)
     reg_no = db.Column(db.String(50), unique=True)
 
+    grades = db.relationship('Grade', backref='student', lazy=True)
     fees = db.relationship("Fees", back_populates="student")
+
 
 with app.app_context(): 
     db.create_all()
@@ -138,6 +145,7 @@ class Fees(UserMixin, db.Model):
 
     student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
     student = relationship("Students", back_populates="fees")
+
 
 with app.app_context(): 
     db.create_all()
@@ -179,10 +187,23 @@ class EmailForm(FlaskForm):
 # students reset password form
 class PasswordResetForm(FlaskForm):
     new_password = PasswordField("Enter your new password", validators=[DataRequired()])
-    submit = SubmitField("Cornfirm") 
+    submit = SubmitField("Confirm")
 
 
-# VALIDARION OF EMAIL
+# ******** lecturers registration form ***********
+class LecturersForm(FlaskForm):
+    department_names = [('Engineering', 'Engineering'), ('Business', 'Business'), ('Mathematics', 'Mathematics')]
+    choices = [('Male', 'Male'), ('Female', 'Female')]
+    f_name = StringField("First name", validators=[DataRequired()])
+    l_name = StringField("Last name", validators=[DataRequired()])
+    email = StringField("Email", validators=[DataRequired(), email.utils.parseaddr])
+    password = PasswordField("Password", validators=[DataRequired()])
+    phone = IntegerField("Phone", validators=[DataRequired()])
+    gender = SelectField('Gender', choices=choices)
+    department = SelectField('Department', choices=department_names)
+    submit = SubmitField("Register")
+
+# VALIDATION OF EMAIL
 def check(email):
     try:
       # validate and get info
@@ -227,8 +248,6 @@ def send_email_config(student_email):
             server.login(email_sender, email_password)
             server.sendmail(email_sender, email_receiver, em.as_string())
         
-        
-
 
 # ************password reset route ************
 @app.route('/reset_password', methods=['POST', 'GET'])
@@ -286,10 +305,8 @@ def send_email():
 
         # return render_template("send_email.html", form=form)
 
-
         if request.method == 'POST':
             email = form.email.data
-        
 
             # check(email)
             # student_email = Students.query.filter_by(email=email).first().email
@@ -300,7 +317,6 @@ def send_email():
 
                 student_form = StudentsResetForm()
                 return render_template("reset.html", student_email=student_email, form=student_form)
-
 
             if request.method == 'POST':
                 student_form = StudentsResetForm()
@@ -335,12 +351,6 @@ def send_email():
                     new_password = password_form.new_password.data
                     return render_template("password_reset.html", student_email=student_email, form=password_form)
 
-
-              
-
-
-               
-
             else:
                 flash("The email is not registered, please enter a registered email")
                 return redirect(url_for("send_email"))
@@ -360,7 +370,13 @@ def home():
     return render_template("index.html", form=form)
 
 
-# ********** reseting password route ***********
+@app.route('/admin_page', methods=["GET", "POST"])
+def admin_page():
+    lecturers = LecturersForm()
+    return render_template("Admin.html", lectures_form=lecturers)
+
+
+# ********** resetting password route ***********
 @app.route('/verify_code', methods=['POST', 'GET'])
 def verify_code():
     student_email = current_user.email
@@ -374,7 +390,6 @@ def verify_code():
 
         else:
             flash("The code is incorrect, please enter the correct code")
-            
 
     return render_template("reset.html", student_email=student_email, form=form)
 
@@ -406,12 +421,10 @@ def login():
 def register():
     form = RegisterForm()
     if request.method == "POST":
-
         # check if email already exists in db
         email = request.form.get("email")
         phone = request.form.get("phone")
         password = request.form.get("password")
-        
 
         check(email)
 
@@ -461,6 +474,45 @@ def register():
 
     return render_template("register.html", form=form)
 
+
+# ********* registering a lecturer ****************
+@app.route('/register_lecturer', methods=["GET", "POST"])
+def register_lecturer():
+    form = LecturersForm()
+    if request.method == "POST":
+        lec_email = request.form.get("email")
+        phone = request.form.get("phone")
+        if Lecturers.query.filter_by(email=lec_email).first():
+            flash("Email already exists!")
+            return redirect(url_for("register_lecturer", error=error))
+        elif Lecturers.query.filter_by(phone=phone).first():
+            flash("Phone number already exists!")
+            return redirect(url_for("register_lecturer", error=error))
+
+        # hashing a password
+        hash_and_salted_password = generate_password_hash(
+            request.form.get('password'),
+            method='pbkdf2:sha256',
+            salt_length=8
+        )
+
+        new_lecturer = Lecturers(
+            email=request.form.get('email'),
+            f_name=request.form.get('f_name'),
+            l_name=request.form.get('l_name'),
+            password=hash_and_salted_password,
+            phone=request.form.get('phone'),
+            gender=request.form.get("gender"),
+            department=request.form.get('department'),
+        )
+
+        db.session.add(new_lecturer)
+        db.session.commit()
+        login_user(new_lecturer)
+
+        return redirect(url_for("home"))
+
+    return render_template("register.html", form=form)
 
 
 # ********** logout route ***********
