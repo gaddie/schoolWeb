@@ -49,6 +49,9 @@ header {
     background: #E78D5C;
 }
 
+.space {
+    padding-top: 20%;
+}
 .hamburger-menu {
     position: absolute;
     top: 0;
@@ -144,7 +147,7 @@ header {
 
 .school_name {
     position: absolute;
-    top: 50%;
+    top: 30%;
     left:17%;
     font-family: 'Lobster', cursive;
     color: #FFDDD2;
@@ -155,13 +158,52 @@ header {
 
 .school_word {
     position: absolute;
-    top: 50%;
+    top: 30%;
     right:20%;
     font-family: 'Lobster', cursive;
     color:#781D42;
     font-size: 10vw;
     
 }
+
+.school-motto {
+    position: absolute;
+    top: 60%;
+    right:55%;
+    left: 10%;
+    color: white;
+    font-size: vw;
+}
+
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 150px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+   
+  }
+  
+  .dropdown-content a {
+    color: black;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+  }
+  
+  .dropdown-content a:hover {background-color: #ddd;}
+  
+  .dropdown:hover .dropdown-content {display: block;}
+  
+
+
 
 /* home page styles */
 
@@ -182,6 +224,7 @@ body {
     
 
 }
+
 
 .home-page {
     display: flex;
@@ -214,6 +257,8 @@ body {
     float: right;
     padding-left: 50%;
 }
+
+
 
 /* section two */
 .section-two {
@@ -279,7 +324,7 @@ body {
 
 
 /* students table */
-#students {
+.students {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;

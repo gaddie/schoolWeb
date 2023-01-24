@@ -403,6 +403,29 @@ def login():
     return render_template("login.html", form=form)
 
 
+# ************ lecturer login *******************
+@app.route('/staff_login', methods=['GET', 'POST'])
+def staff_login():
+    form = StudentsLoginForm()
+    if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("password")
+        lecturer = Lecturers.query.filter_by(email=email).first()
+        if lecturer:
+            if check_password_hash(lecturer.password, password):
+                login_user(lecturer)
+                return redirect(url_for("students_page", name=lecturer.f_name))
+            else:
+                flash("Please check your password")
+                return redirect(url_for("login", error=error))
+        else:
+            flash("Please check your email!")
+            return redirect(url_for("login", error=error))
+
+    return render_template("login.html", form=form)
+
+
+
 # ************* register route ****************
 @app.route('/register', methods=["GET", "POST"])
 def register():
@@ -495,7 +518,7 @@ def register_lecturer():
 
         db.session.add(new_lecturer)
         db.session.commit()
-        login_user(new_lecturer)
+        # login_user(new_lecturer)
 
         return redirect(url_for("home"))
 
@@ -517,6 +540,8 @@ def students_page():
 
 @app.route('/admin')
 def admin():
+    lec_form = LecturersForm()
+    students_form = Students()
     return render_template('admin.html')
 
 

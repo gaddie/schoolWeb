@@ -18,7 +18,6 @@
 
 
 
-
     <header>
         <div class="header-left">
            
@@ -30,9 +29,15 @@
               <a class="nav-link" href="{{ url_for('home') }}">Home</a>
             </li>
               {% if not current_user.is_authenticated: %}
-              <li class="nav-item color">
-                <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+              <li class="nav-item color dropdown">
+                <a class="nav-link dropbtn" href="{{ url_for('login') }}">Portals</a>
+                  <div class="dropdown-content">
+                    <a href="{{ url_for('login') }}">students Login</a>
+                    <a href="{{ url_for('staff_login') }}">staff Login</a>
+                  </div>
               </li>
+              
+             
               <li class="nav-item color">
                 <a class="nav-link" href="{{ url_for('register') }}">Register</a>
               </li>
@@ -70,14 +75,13 @@
            </a>
         </div>
         <div class="hamburger-menu">
-           <ul>
+           <ul class="space">
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('home') }}">Home</a>
             </li>
        
+
              {% if not current_user.is_authenticated: %}
-
-
              <li class="nav-item">
               <a class="nav-link" href="{{ url_for('login') }}">Login</a>
             </li>
