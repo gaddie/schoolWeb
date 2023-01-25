@@ -22,6 +22,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from wtforms import Form, SelectField
 
 
+
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'any-secret-key-you-choose'

@@ -1,41 +1,89 @@
 {% include "header.html" %}
-<body>
-    {% if current_user.is_authenticated: %}
-    <div class="name">
-        <i class="fa-solid fa-user"></i>{{current_user.f_name}}
-    </div>
-    {% endif %}
-    <div class="container information">
-        <table class="students">
-            <tr>
-            <th>Date</th>
-            <th>Code</th>
-            <th>Amount</th>
-            </tr>
-            <tr>
-            <td>Alfreds Futterkiste</td>
-            <td>Maria Anders</td>
-            <td>Germany</td>
-            </tr>
-            <tr>
-            <td>Centro comercial Moctezuma</td>
-            <td>Francisco Chang</td>
-            <td>Mexico</td>
-            </tr>
-        </table>
-    </div>
-    
-    <div class="container information">
-        <table class="students">
 
-            <tr>
-            <th>Balance</th>
-            <th>balance</th>
-        
-            </tr>
-           
-        </table>
+<body>
+
+
+    <div class="row menu-bar">
+       
+
+        <div class="container-one col-lg-3 student-menu-btn">
+            <button class="btn button-style" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">Students menu</button>
+
+            <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+                id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+                <div class="offcanvas-header">
+                    
+                    {% if current_user.is_authenticated: %}
+                    <div class="name offcanvas-title" >
+                        <p><i class="fa-solid fa-user"></i>{{current_user.f_name}}</p>
+                    </div>
+                    {% endif %}
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ol class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                          <div class="ms-2 me-auto">
+                            <div class="fw-bold"><a class="text-decoration" href="#">Fee Statement</a></div>
+                            
+                          </div>
+                          <i class="fa fa-money-bill icon"></i>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                          <div class="ms-2 me-auto">
+                            <div class="fw-bold"><a class="text-decoration" href="{{ url_for('send_email') }}">Change Password</a></div>
+                            
+                          </div>
+                          <i class="fa-solid fa-lock icon"></i>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                          <div class="ms-2 me-auto">
+                            <div class="fw-bold"><a class="text-decoration" href="#">Units Registered</a></div>
+                          </div>
+                          <i class="fa-regular fa-note-sticky icon"></i>
+                        </li>
+                      </ol>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <div class="detail-tab">
+        <div class="container-two">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Handle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td colspan="2">Larry the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
