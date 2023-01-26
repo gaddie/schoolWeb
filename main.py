@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, render_template, request, flash, redirect, url_for, g, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
@@ -20,6 +20,8 @@ from sqlalchemy import Table, Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from wtforms import Form, SelectField
+from functools import wraps
+
 
 
 
@@ -46,6 +48,15 @@ Base = declarative_base()
 @login_manager.user_loader
 def load_user(user):
     return Students.query.get(int(user))
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated:
+            return redirect(url_for('login', next=request.url))
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 # ---------- DATABASE TABLES ------------
@@ -425,6 +436,13 @@ def staff_login():
 
     return render_template("login.html", form=form)
 
+
+
+@app.route("/student_page")
+@login_required
+def student_page():
+    name = current_user.f_name
+    return render_template("students_menu.html", name=name)
 
 
 # ************* register route ****************
