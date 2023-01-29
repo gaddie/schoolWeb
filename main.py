@@ -224,8 +224,7 @@ def check(email):
     try:
       # validate and get info
         v = validate_email(email)
-        # replace with normalized form
-        email = v["email"] 
+        email = v["email"]
         return True
     except EmailNotValidError as e:
         # email is not valid, exception message is human-readable
@@ -259,6 +258,8 @@ def send_email_config(student_email):
         em.set_content(body)
 
         context = ssl.create_default_context()
+        context.check_hostname = False
+        context.verify_mode = ssl.CERT_NONE
 
         with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
             server.login(email_sender, email_password)
