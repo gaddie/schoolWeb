@@ -264,42 +264,14 @@ def send_email_config(student_email):
         with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
             server.login(email_sender, email_password)
             server.sendmail(email_sender, email_receiver, em.as_string())
-        
 
-# ************password reset route ************
-@app.route('/reset_password', methods=['POST', 'GET'])
-def reset_password():
-    student_email = current_user.email
-    password_form = PasswordResetForm()
-
-    if request.method == 'POST':
-        new_password = password_form.new_password.data
-
-         # VALIDATION OF PASSWORD
-        if len(new_password) < 8:
-            flash("Your password must be atleast 8 characters.")
-            return redirect(url_for("reset_password", error=error))
-        elif re.search('[0-9]',new_password) is None:
-            flash("Your password must have at least 1 number")
-            return redirect(url_for("reset_password", error=error))
-        elif re.search('[A-Z]',new_password) is None:
-            flash("Your password must have at least 1 uppercase letter.")
-            return redirect(url_for("reset_password", error=error))
-        else:
-            hashed_password = generate_password_hash(new_password, method='pbkdf2:sha256', salt_length=8)
-            student = Students.query.filter_by(email=student_email).first()
-            student.password = hashed_password
-            db.session.commit()
-        return redirect(url_for("home"))
-        
-    return render_template("password_reset.html", student_email=student_email, form=password_form)
 
 
 # ********** SENDING EMAIL FOR VALIDATION **********
 @app.route('/send_email', methods=["GET", "POST"])
-def send_email(): 
+def send_email():
     password_form = PasswordResetForm()
-    
+
     if not current_user.is_authenticated:
         form = EmailForm()
 
@@ -327,14 +299,15 @@ def send_email():
                         if len(new_password) < 8:
                             flash("Your password must be atleast 8 characters.")
                             return redirect(url_for("reset_password", error=error))
-                        elif re.search('[0-9]',new_password) is None:
+                        elif re.search('[0-9]', new_password) is None:
                             flash("Your password must have at least 1 number")
                             return redirect(url_for("reset_password", error=error))
-                        elif re.search('[A-Z]',new_password) is None:
+                        elif re.search('[A-Z]', new_password) is None:
                             flash("Your password must have at least 1 uppercase letter.")
                             return redirect(url_for("reset_password", error=error))
                         else:
-                            hashed_password = generate_password_hash(new_password, method='pbkdf2:sha256', salt_length=8)
+                            hashed_password = generate_password_hash(new_password, method='pbkdf2:sha256',
+                                                                     salt_length=8)
                             student = Students.query.filter_by(email=student_email).first()
                             student.password = hashed_password
                             db.session.commit()
@@ -351,11 +324,11 @@ def send_email():
                 flash("The email is not registered, please enter a registered email")
                 return redirect(url_for("send_email"))
         return render_template("send_email.html", form=form)
-        
+
     else:
         student_email = current_user.email
         send_email_config(student_email)
-    
+
         return redirect(url_for("verify_code"))
 
 
@@ -379,9 +352,8 @@ def admin_page():
 # ********** resetting password route ***********
 @app.route('/verify_code', methods=['POST', 'GET'])
 def verify_code():
-    student_email = current_user.email
     form = StudentsResetForm()
-
+    student_email = current_user.email
     if request.method == 'POST':
         user_code = form.code.data
 
@@ -392,6 +364,35 @@ def verify_code():
             flash("The code is incorrect, please enter the correct code")
 
     return render_template("reset.html", student_email=student_email, form=form)
+
+
+# ************password reset route ************
+@app.route('/reset_password', methods=['POST', 'GET'])
+def reset_password():
+    student_email = current_user.email
+    password_form = PasswordResetForm()
+
+    if request.method == 'POST':
+        new_password = password_form.new_password.data
+
+        # VALIDATION OF PASSWORD
+        if len(new_password) < 8:
+            flash("Your password must be atleast 8 characters.")
+            return redirect(url_for("reset_password", error=error))
+        elif re.search('[0-9]', new_password) is None:
+            flash("Your password must have at least 1 number")
+            return redirect(url_for("reset_password", error=error))
+        elif re.search('[A-Z]', new_password) is None:
+            flash("Your password must have at least 1 uppercase letter.")
+            return redirect(url_for("reset_password", error=error))
+        else:
+            hashed_password = generate_password_hash(new_password, method='pbkdf2:sha256', salt_length=8)
+            student = Students.query.filter_by(email=student_email).first()
+            student.password = hashed_password
+            db.session.commit()
+        return redirect(url_for("home"))
+
+    return render_template("password_reset.html", student_email=student_email, form=password_form)
 
 
 # ************ students login route ************

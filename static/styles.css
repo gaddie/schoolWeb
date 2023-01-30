@@ -359,6 +359,10 @@ body {
     color: #781D42;
 }
 
+
+.modal-content {
+    background-color: #9DF1DF;
+}
 #atudents td,
 #atudents th {
     border: 1px solid #ddd;
