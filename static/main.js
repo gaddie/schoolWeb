@@ -9,7 +9,7 @@ $(document).ready(function(){
   });
 });
 
-//owl carousel
+//owl carousel pictures
 $(document).ready(function() {
     // Owl Carousel
     var owl = $(".owl-carousel");

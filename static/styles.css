@@ -309,6 +309,9 @@ body {
 .home-demo .item {
     background: #ff3f4d;
 }
+.section-three {
+    background-color: #F8CBA6;
+}
 
 .home-demo h2 {
     color: #FFF;
@@ -451,11 +454,14 @@ body {
     text-align: -webkit-center;
 }
 
+.news {
+    color: white;
+}
+
 * { 
     margin : 0;
     padding: 0;
-   
-    
+
   }
 
  
@@ -464,7 +470,7 @@ body {
     position: relative;
     max-width : 250px;
     height : 215px;  
-    background-color : #fff;
+    background-color : #781D42;
     margin : 30px 10px;
     padding : 20px 15px;
     
@@ -520,6 +526,27 @@ body {
 }
 
 
+
+/* section five */
+.student-image {
+    width: 100%;
+    height: auto;
+}
+.section-five {
+    margin-top: 10%;
+}
+
+/* tesimonials  styles */
+* {
+    box-sizing: border-box;
+  }
+  :root {
+    --background-color: black;
+    --text-color: hsl(0, 0%, 100%);
+  }
+ 
+
+
 /* footer styles */
 .footer {
     background-color: #781D42;
@@ -527,7 +554,7 @@ body {
     align-items: center;
     text-align: center;
     padding-bottom: 20px;
-    margin-top: 30px;
+    /* margin-top: 30px; */
 
 }
 
@@ -535,7 +562,7 @@ body {
     width: 80%;
     align-items: center;
     padding-left: 20%;
-    margin-top: 20%;
+    /* margin-top: 20%; */
 }
 
 .footer-text {
@@ -674,3 +701,6 @@ body {
   color: #ffffff;
 }
 
+.png {
+    background: transparent;
+}

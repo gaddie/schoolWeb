@@ -571,4 +571,5 @@ if __name__ == "__main__":
 
 
 # change the password route for when the user is not logged in
-
+# add the news and events db
+# add the admin section and the db
