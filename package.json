@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "jquery": "^3.6.3"
+    "jquery": "^3.6.3",
+    "pattern.css": "^1.0.0"
   }
 }
