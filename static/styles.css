@@ -335,6 +335,7 @@ body {
     background-color: #781D42;
 
     color: rgb(255, 251, 251);
+    margin-bottom: 50px;
 }
 
 .wtf-form input[type=submit]:hover,
@@ -537,14 +538,9 @@ body {
 }
 
 /* tesimonials  styles */
-* {
-    box-sizing: border-box;
-  }
-  :root {
-    --background-color: black;
-    --text-color: hsl(0, 0%, 100%);
-  }
- 
+.testimonies {
+    padding: 5%;
+}
 
 
 /* footer styles */
