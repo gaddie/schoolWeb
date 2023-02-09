@@ -20,6 +20,8 @@
         {% endwith %}
 
        {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+      <a href=" {{ url_for('admin_page') }} "><button class="button btn"><i class="fa-sharp fa-solid fa-backward"></i> Back</button>
+      </a>
 
       </div>
     </div>

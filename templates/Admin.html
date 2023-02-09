@@ -1,18 +1,113 @@
 {% include "header.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
 
-{% block content %}
-
-<div>
-    <table>
-        <tr>
-            <td></td>
-        </tr>
-    </table>
-</div>
+<body>
 
 
- 
+  <div class="row menu-bar">
 
+
+    <div class="container-one col-lg-3 student-menu-btn">
+      <button class="btn button-style" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling"
+        aria-controls="offcanvasScrolling">Main menu</button>
+
+      <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+        id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+        <div class="offcanvas-header">
+
+          {% if current_user.is_authenticated: %}
+          <div class="name offcanvas-title">
+            <p><i class="fa-solid fa-user"></i>{{current_user.f_name}}</p>
+          </div>
+          {% endif %}
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ol class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold"><a class="text-decoration" href="{{ url_for('register') }}">Register a student</a>
+                </div>
+
+              </div>
+              <i class="fa fa-money-bill icon"></i>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold"><a class="text-decoration" href="{{ url_for('register_lecturer') }}">Register a
+                    lecturer</a></div>
+              </div>
+              <i class="fa-regular fa-note-sticky icon"></i>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold"><a class="text-decoration" href="">deregister a lecturer</a></div>
+              </div>
+              <i class="fa-regular fa-note-sticky icon"></i>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold"><a class="text-decoration" href="">deregister a student</a></div>
+              </div>
+              <i class="fa-regular fa-note-sticky icon"></i>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+              <div class="ms-2 me-auto">
+                <div class="fw-bold"><a class="text-decoration" href="{{ url_for('send_email') }}">Change Password</a>
+                </div>
+
+              </div>
+              <i class="fa-solid fa-lock icon"></i>
+            </li>
+
+
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-tab">
+    <div class="container-two">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Action</th>
+            <th scope="col">Register</th>
+            <th scope="col">Deregister</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Student</th>
+            <td>Mark</td>
+            <td>Otto</td>
+
+          </tr>
+          <tr>
+            <th scope="row">Lecturer</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td colspan="2">Larry the Bird</td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+  <script src="static/main.js"></script>
+
+</body>
 {% include "footer.html" %}
-{% endblock %}

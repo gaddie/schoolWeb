@@ -335,11 +335,27 @@ body {
     background-color: #781D42;
 
     color: rgb(255, 251, 251);
-    margin-bottom: 50px;
+    /* margin-bottom: 50px; */
 }
 
 .wtf-form input[type=submit]:hover,
 .wtf-form button[type=submit]:hover {
+    transform: scale(1.02);
+    background-color: #BFEAF5;
+    color: black;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    font-family: 'Lobster', cursive;
+}
+
+.button {
+    margin-top: 30px;
+    width: 100%;
+    background-color: #781D42;
+    color: rgb(255, 251, 251);
+    margin-bottom: 50px;
+}
+
+.button:hover {
     transform: scale(1.02);
     background-color: #BFEAF5;
     color: black;
@@ -697,6 +713,3 @@ body {
   color: #ffffff;
 }
 
-.png {
-    background: transparent;
-}

@@ -62,19 +62,20 @@ def login_required(f):
 # ---------- DATABASE TABLES ------------
 # ************ admins DB ****************
 
-# class Admins(UserMixin, db.Model):
-#     __tablename__ = 'admins'
-#     id = db.Column(db.Integer, primary_key=True)
-#     email = db.Column(db.String(100), unique=True)
-#     password = db.Column(db.String(100))
-#     f_name = db.Column(db.String(1000))
-#     l_name = db.Column(db.String(1000))
-#     phone = db.Column(db.Integer, unique=True)
-#     occupation = db.Column(db.String(100))
+class Admins(UserMixin, db.Model):
+    __tablename__ = 'admins'
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(100), unique=True)
+    password = db.Column(db.String(100))
+    f_name = db.Column(db.String(1000))
+    l_name = db.Column(db.String(1000))
+    phone = db.Column(db.Integer, unique=True)
+    occupation = db.Column(db.String(100))
+    department = db.Column(db.String(100))
 
 
-# with app.app_context(): 
-#     db.create_all()   
+with app.app_context():
+    db.create_all()
 
 
 # ************ lectures db **************
